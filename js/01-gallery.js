@@ -21,19 +21,24 @@ function createGalleryItems(item) {
     })
     .join("");
 }
+
 function onImgClick(evt) {
   evt.preventDefault();
-  if (!evt.target.classList.contains("gallery__image")) {
+  if (evt.target.nodeName !== "IMG") {
     return;
   }
   const inStance = basicLightbox.create(`
     <img src="${evt.target.dataset.source}" width="1280" height="auto">`);
   inStance.show();
-  listElement.addEventListener("keydown", (evt) => {
+
+  listElement.addEventListener("keydown", onPressingEsc);
+
+  function onPressingEsc(evt) {
     if (evt.code === "Escape") {
       inStance.close();
+      listElement.removeEventListener("keydown", onPressingEsc);
     }
-  });
+  }
 }
 
 console.log(galleryItems);
